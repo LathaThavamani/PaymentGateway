@@ -6,7 +6,7 @@ namespace PaymentGateway.Repositories
 {
     public class PaymentRepository : IPaymentRepository
     {
-      
+
 
         //            {
         //    "id": 1,
@@ -32,7 +32,10 @@ namespace PaymentGateway.Repositories
             using (var context = new PaymentApiContext())
             {
                 var payment = context.Payments.Where(p => p.Id == Id).FirstOrDefault();
-                payment.CardNumber = MaskCardNumber(payment.CardNumber);
+                if (payment != null)
+                {
+                    payment.CardNumber = MaskCardNumber(payment.CardNumber);
+                }
                 return payment;
             }
         }

@@ -1,12 +1,17 @@
+using Microsoft.AspNetCore.Authentication;
 using PaymentGateway.Repositories;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+builder.Services.AddAuthentication("BasicAuthentication").
+            AddScheme<AuthenticationSchemeOptions, PaymentGateway.BasicAuthenticationHandler>
+            ("BasicAuthentication", null);
 //builder.Services.AddControllers();
 builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -21,6 +26,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

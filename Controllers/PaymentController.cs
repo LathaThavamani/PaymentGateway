@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PaymentGateway.BankSimulator;
 using PaymentGateway.Models;
 
@@ -6,11 +7,12 @@ namespace PaymentGateway.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PaymentController : ControllerBase
     {
 
         BankSimulator.BankSimulator simulator = new BankSimulator.BankSimulator();
-
+        
         [HttpGet]
         public ActionResult<dynamic> Get()
         {
