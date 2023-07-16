@@ -22,6 +22,7 @@ namespace PaymentGateway.Repositories
             using (var context = new PaymentApiContext())
             {
                 var payments = context.Payments.ToList();
+                payments.ForEach(p => { p.CardNumber = MaskCardNumber(p.CardNumber); });
                 return payments;
             }
         }
@@ -31,6 +32,7 @@ namespace PaymentGateway.Repositories
             using (var context = new PaymentApiContext())
             {
                 var payment = context.Payments.Where(p => p.Id == Id).FirstOrDefault();
+                payment.CardNumber = MaskCardNumber(payment.CardNumber);
                 return payment;
             }
         }
@@ -44,6 +46,17 @@ namespace PaymentGateway.Repositories
                 context.Payments.AddRange(paymentObj);
                 context.SaveChanges();
             }
+        }
+
+        public string MaskCardNumber(string cardNumber, int visibleDigits = 4, char mask = '*')
+        {
+            // Check if the card number is valid or not
+            if (string.IsNullOrEmpty(cardNumber) || cardNumber.Length <= visibleDigits)
+            {
+                return cardNumber;
+            }
+            string maskedCardNumber = new string('*', cardNumber.Length - visibleDigits) + cardNumber.Substring(cardNumber.Length - visibleDigits);
+            return maskedCardNumber;
         }
     }
 }
