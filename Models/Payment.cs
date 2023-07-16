@@ -2,6 +2,7 @@
 
 namespace PaymentGateway.Models
 {
+    // Payment Data model to store and retrieve payment data with few validation
     public class Payment
     {
         public string? Id { get; set; }

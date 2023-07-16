@@ -2,6 +2,7 @@
 
 namespace PaymentGateway.Repositories
 {
+    // Payment Repository interface with defined set of methods
     public interface IPaymentRepository
     {
         public List<Payment> GetAllPayments();

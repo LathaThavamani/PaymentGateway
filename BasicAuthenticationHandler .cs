@@ -3,13 +3,10 @@ using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text;
-using System.ComponentModel;
-using Microsoft.AspNetCore.Http;
-using System.Text.Json;
-using System.Net.Http;
 
 namespace PaymentGateway
 {
+    // Basic authentication handler to authorize all the API calls
     public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
         public BasicAuthenticationHandler(
@@ -31,6 +28,7 @@ namespace PaymentGateway
                 System.Console.WriteLine(token);
                 var credentialstring = Encoding.UTF8.GetString(Convert.FromBase64String(token));
                 var credentials = credentialstring.Split(':');
+                // Check valid credential or not
                 if (credentials[0] == "admin" && credentials[1] == "password")
                 {
                     var claims = new[] { new Claim("name", credentials[0]), new Claim(ClaimTypes.Role, "Admin") };
@@ -38,13 +36,14 @@ namespace PaymentGateway
                     var claimsPrincipal = new ClaimsPrincipal(identity);
                     return Task.FromResult(AuthenticateResult.Success(new AuthenticationTicket(claimsPrincipal, Scheme.Name)));
                 }
-
+                // Unauthorized response
                 Response.StatusCode = 401;
                 return Task.FromResult(AuthenticateResult.Fail(invalidMessage));
 
             }
             else
             {
+                // Unauthorized response
                 Response.StatusCode = 401;
                 return Task.FromResult(AuthenticateResult.Fail(invalidMessage));
             }

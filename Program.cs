@@ -5,10 +5,10 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+// Register Basic Authentication for this project
 builder.Services.AddAuthentication("BasicAuthentication").
             AddScheme<AuthenticationSchemeOptions, PaymentGateway.BasicAuthenticationHandler>
             ("BasicAuthentication", null);
-//builder.Services.AddControllers();
 builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
