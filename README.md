@@ -23,7 +23,7 @@ The response includes a ``masked card number`` along with other payment fields.
 ---
 
 - [Installation and Setup Guide](./Documentation/PaymentGateway-ProjectSetupGuide.pdf) : Please read the instructions and setup the project locally to test API.
-- [API Documentation](./Documentation/PaymentGateway-API Documentation .pdf) : This file contains clear information about all the APIs, Authentication, Request & Response, Validations and attached screenshots for your reference.
+- [API Documentation](./Documentation/PaymentGateway-APIDoucmentation.pdf) : This file contains clear information about all the APIs, Authentication, Request & Response, Validations and attached screenshots for your reference.
 
 ### **Areas of improvement**
 ---
