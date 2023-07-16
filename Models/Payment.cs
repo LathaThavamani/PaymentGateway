@@ -2,7 +2,7 @@
 {
     public class Payment
     {
-        public int Id { get; set; }
+        public string? Id { get; set; }
         public string CardNumber { get; set; }
         public string ExpirtMonthDate { get; set; }
         public double amount { get; set; }

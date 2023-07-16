@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PaymentGateway.BankSimulator;
 using PaymentGateway.Models;
-using PaymentGateway.Repositories;
 
 namespace PaymentGateway.Controllers
 {
@@ -9,28 +9,52 @@ namespace PaymentGateway.Controllers
     public class PaymentController : ControllerBase
     {
 
-        readonly IPaymentRepository _paymentRepository;
-        public PaymentController(IPaymentRepository paymentRepository)
-        {
-            _paymentRepository = paymentRepository;
-        }
+        BankSimulator.BankSimulator simulator = new BankSimulator.BankSimulator();
+
         [HttpGet]
-        public ActionResult<List<Payment>> Get()
+        public ActionResult<dynamic> Get()
         {
-            return Ok(_paymentRepository.GetAllPayments());
+            var message = new ResponseMessage();
+            try
+            {
+                return Ok(simulator.GetAllPayments());
+            }
+            catch(Exception e)
+            {
+                message.Message = e.Message;
+                return Ok(message);
+            }
         }
 
-        //// GET api/<PaymentController>/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
+        // GET api/<PaymentController>/5
+        [HttpGet("{id}")]
+        public ActionResult<dynamic> Get(string id)
+        {
+            var message = new ResponseMessage();
+            try
+            {
+                return Ok(simulator.GetPaymentDetailsById(id));
+            }
+            catch (Exception e)
+            {
+                message.Message = e.Message;
+                return Ok(message);
+            }
+        }
 
-        //// POST api/<PaymentController>
-        //[HttpPost]
-        //public void Post([FromBody] string value)
-        //{
-        //}
+        [HttpPost]
+        public ActionResult<ResponseMessage> Post([FromBody] Payment paymentObj)
+        {
+            var message = new ResponseMessage();
+            try { 
+                simulator.ProcessPayment(paymentObj);
+                message.Message = "Payment Successful";
+            }
+            catch(Exception e)
+            {
+                message.Message = e.Message;
+            }
+            return Ok(message);
+        }
     }
 }
